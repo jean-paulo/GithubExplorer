@@ -1,5 +1,9 @@
 # GithubExplorer  🧑🏻‍💻  🕵🏽‍♂️
 Explore repositórios no GitHub
+#
+![](assets/gitexp.png)
+#
+![](assets/gitrep.png)
 ## Tecnologias utilizadas
 - React
 - Typescript
