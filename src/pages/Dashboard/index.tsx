@@ -19,7 +19,7 @@ interface Repository {
 }
 
 const Dashboard: React.FC = () => {
-  const [newRepo, setNewRepo] = useState('');
+  const [user, setUser] = useState('');
   const [inputError, setInputError] = useState('');
 
   const [repositories, setRepositories] = useState<Repository[]>(() => {
@@ -42,25 +42,31 @@ const Dashboard: React.FC = () => {
     // Adição de um novo repositório: Consumir API do Github e Salvar o novo repositório no estado.
     event.preventDefault();
 
-    if (!newRepo) {
+    if (!user) {
       setInputError('Digite o autor/nome do repositório.');
       return;
     }
 
     try {
-      const response = await api.get<Repository>(`repos/${newRepo}`);
+      const response = await api.get<Repository[]>(`users/${user}/repos`);
+      const currentReposMap = new Map(repositories.map(repo => [repo.full_name, repo]));
+      const uniqueRepositories = response.data.filter(
+        repo => !currentReposMap.has(repo.full_name)
+      );
 
-      const repository = response.data;
-
-      setRepositories([...repositories, repository]);
+      setRepositories([...repositories, ...uniqueRepositories]);
 
       // Limpa o input e o erro
-      setNewRepo('');
+      setUser('');
       setInputError('');
     } catch (err) {
       setInputError('Erro na busca por esse repositório');
     }
   }
+
+  useEffect(() => {
+    console.log("repositories", repositories);
+  }, [repositories])
 
   return (
     <>
@@ -68,10 +74,11 @@ const Dashboard: React.FC = () => {
       <Title>Explore repositórios no Github.</Title>
 
       <Form hasError={!!inputError} onSubmit={handleAddRepository}>
+
         <input
-          value={newRepo}
-          onChange={(e) => setNewRepo(e.target.value)}
-          placeholder="Digite o nome do repositório"
+          value={user}
+          onChange={(e) => setUser(e.target.value)}
+          placeholder="Digite o nome do usuário"
         />
         <button type="submit">
           Pesquisar
