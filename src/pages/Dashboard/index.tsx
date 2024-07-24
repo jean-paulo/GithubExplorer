@@ -64,10 +64,6 @@ const Dashboard: React.FC = () => {
     }
   }
 
-  useEffect(() => {
-    console.log("repositories", repositories);
-  }, [repositories])
-
   return (
     <>
       <img src={logoImg} alt="Github Explorer" />
