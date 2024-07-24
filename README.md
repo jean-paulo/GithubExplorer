@@ -12,3 +12,6 @@ Explore repositórios no GitHub
 - Editorconfig
 - Eslint
 - Prettier
+
+### Live preview:
+https://github-explorer-git-master-jean-paulo-rodrigues-santos-projects.vercel.app/
